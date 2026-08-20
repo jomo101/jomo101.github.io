@@ -34,27 +34,22 @@ modes — if you change a color, re-check before publishing.
 
 Dark mode follows the visitor's system setting automatically.
 
-## Publishing — NOT YET DONE
+## Publishing
 
-As of Aug 2026 this site is **not live**. `https://jomo101.github.io` returns
-404 and no repo of that name exists on the account. To publish:
+**Live at https://jomo101.github.io** — repo `jomo101/jomo101.github.io`,
+Pages serving `main` at root. Push to `main` and the site rebuilds in a minute
+or two:
 
-1. Create a public repo named `jomo101.github.io` on GitHub.
-2. From this folder:
+```bash
+git add -A && git commit -m "..." && git push
+```
 
-   ```bash
-   git init -b main
-   git add .
-   git commit -m "Initial site"
-   git remote add origin https://github.com/jomo101/jomo101.github.io.git
-   git push -u origin main
-   ```
+`cv.pdf` is in `.gitignore` on purpose: nothing on the site links to it, and it
+carries a phone number and home address that would otherwise be publicly
+downloadable at `jomo101.github.io/cv.pdf`. To publish a CV, put a scrubbed copy
+in the repo and re-add the nav link.
 
-3. GitHub → repo → **Settings → Pages** → Source: *Deploy from a branch*,
-   Branch: `main` / `/ (root)`.
-4. Live at `https://jomo101.github.io` in a minute or two.
-
-Also worth moving this folder out of `~/Downloads` first.
+The working copy still lives in `~/Downloads` — worth moving somewhere durable.
 
 ## Before publishing — open items
 
