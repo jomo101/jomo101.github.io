@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code &amp; data — Joseph Moscoso</title>
+<meta name="description" content="Scientific software by Joseph Moscoso: a from-scratch Wilson-clover RHMC gauge-field sampler in C, PyCALQ, Bayesian reaction-rate codes in R, and lattice QCD data releases.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%234B9CD3'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-size='15' font-weight='bold' fill='%23fff' text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = { tex: { inlineMath: [['$','$']] } };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <nav class="site">
+    <a href="index.html">Home</a>
+    <a href="research.html">Research</a>
+    <a href="publications.html">Publications</a>
+    <a href="code.html" aria-current="page">Code</a>
+  </nav>
+  <h1 class="page-title">Code &amp; data</h1>
+  <p class="page-intro">
+    Public repositories at <a href="https://github.com/jomo101">github.com/jomo101</a>.
+  </p>
+</header>
+
+<main id="main">
+
+  <h2>Simulation engines</h2>
+
+  <h3>Wilson-clover RHMC gauge-field sampler <span class="tag">C</span></h3>
+  <p>
+    A lattice QCD sampler written from scratch in C, no external libraries. Wilson and
+    clover fermions, even/odd preconditioning, and $n$-th-root pseudofermions via the
+    Clark&ndash;Kennedy construction: Remez coefficients, multi-shift CG with
+    converged-shift freezing, adaptive spectral windows. Validated against physics
+    identities &mdash; reversibility, finite-difference force checks,
+    $\langle e^{-\Delta H}\rangle = 1$ &mdash; with an $N_f = 1{+}1$ run reproducing a
+    validated $N_f = 2$ ensemble.
+  </p>
+  <p>
+    Replacing leapfrog with Omelyan 2MN and a two-level Sexton&ndash;Weingarten splitting,
+    at equal solve budget on $6^3\times 8$, $\kappa = 0.13$:
+  </p>
+  <figure>
+    <div class="table-wrap">
+      <table class="perf">
+        <thead>
+          <tr><th>Scheme</th><th>$d\tau$ (steps)</th><th>$dH$ rms</th><th>Acceptance</th><th>Iters/traj</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Leapfrog</td><td>0.05 (10)</td><td>0.553</td><td>87%</td><td>431</td></tr>
+          <tr><td>Omelyan 2MN</td><td>0.10 (5)</td><td>0.166</td><td>98%</td><td>438</td></tr>
+          <tr class="best"><td>2MN + SW (m=4)</td><td>0.125 (4)</td><td>0.018</td><td>100%</td><td>366</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figcaption>
+      30&times; smaller $dH$ rms with fewer solves. The gauge force, not the fermion
+      force, was setting the step-size limit.
+    </figcaption>
+  </figure>
+  <p>
+    <strong>MPI</strong> &mdash; 1-D $t$-slab decomposition behind one communication seam;
+    identical CG iteration counts and 13&ndash;14-digit agreement across 1, 2 and 4 ranks.
+  </p>
+  <p>
+    <strong>Batched rational solver</strong> &mdash; columns of {pseudofermion} &times;
+    {shift} with per-column recurrences and tolerances, converged columns freezing out.
+    Bridged into a collaborator's AVX-512 Wilson-clover inverter so one pair of Dslash
+    sweeps serves every column.
+  </p>
+  <p style="color:var(--muted);font-size:.93rem;">Private repository.</p>
+
+  <h3><a href="https://github.com/jomo101/PyCALQ">PyCALQ</a> <span class="tag">Python</span></h3>
+  <p>
+    Correlator analysis through the Lüscher quantization condition.
+    <code>fvspectrum</code> extracts the finite-volume spectrum; <code>QC2</code> fits
+    phase shifts and mixing angles against $\det(K^{-1} - B) = 0$ with coupled-channel
+    K-matrix models and bootstrap errors. Absorbs my standalone NN-tools fitter.
+  </p>
+  <div class="stat">
+    <b>17.7 s &rarr; 40 ms</b>
+    <span>per $\chi^2$ evaluation, 440&times;. Hoisting the parameter-independent $B(E)$
+    out of the optimizer loop onto a Chebyshev&ndash;Lobatto grid with the poles divided
+    out, then solving roots vectorized across a process pool. Made multi-wave fits with
+    $N = 1000$ bootstraps tractable.</span>
+  </div>
+
+  <h2>Analysis tools</h2>
+  <dl class="entries">
+    <dt><a href="https://github.com/jomo101/bayesrates">bayesrates</a> <span class="tag">R</span></dt>
+    <dd>Hierarchical Bayesian S-factor fits and thermonuclear reaction rates.</dd>
+
+    <dt><a href="https://github.com/jomo101/mc-reaction-rates">mc-reaction-rates</a> <span class="tag">R</span></dt>
+    <dd>Monte Carlo uncertainty propagation for reaction rates, following Longland
+      <em>et al.</em> (2010).</dd>
+
+    <dt><a href="https://github.com/jomo101/thermonuke">thermonuke</a> <span class="tag">Mathematica</span></dt>
+    <dd>N3AS project on thermonuclear reaction rates, with Arya Joshipura.</dd>
+  </dl>
+
+  <h2>Data releases</h2>
+  <dl class="entries">
+    <dt><a href="https://github.com/jomo101/LatticeEftData">LatticeEftData</a></dt>
+    <dd>Spectra, matrix elements, and fitted amplitudes for
+      <a href="https://arxiv.org/abs/2602.20373">arXiv:2602.20373</a>.</dd>
+
+    <dt><a href="https://github.com/jomo101/d-p-g-He-Bayesian-Analysis">d-p-g-He-Bayesian-Analysis</a></dt>
+    <dd>Bayesian analysis of $D(p,\gamma)^3$He data for
+      <a href="https://arxiv.org/abs/2109.00049">ApJ <strong>923</strong>, 49 (2021)</a>.</dd>
+  </dl>
+
+</main>
+
+<footer class="site">
+  <a href="index.html">Joseph Moscoso</a> · University of Maryland, College Park<br>
+  Last updated August 2026.
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — Joseph Moscoso</title>
+<meta name="description" content="Research of Joseph Moscoso: hadron resonances from coupled-channel scattering, bound-state structure in finite volume, two-nucleon systems, lattice field theory software and HPC.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%234B9CD3'/%3E%3Ctext x='16' y='22' font-family='Helvetica,Arial' font-size='15' font-weight='bold' fill='%23fff' text-anchor='middle'%3EJM%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = { tex: { inlineMath: [['$','$']] } };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+
+<header class="site">
+  <nav class="site">
+    <a href="index.html">Home</a>
+    <a href="research.html" aria-current="page">Research</a>
+    <a href="publications.html">Publications</a>
+    <a href="code.html">Code</a>
+  </nav>
+  <h1 class="page-title">Research</h1>
+  <p class="page-intro">
+    Lattice quantum field theory, the statistics needed to get physics out of it, and the
+    software that runs it.
+  </p>
+</header>
+
+<main id="main">
+
+  <h2>Hadron resonances from coupled-channel scattering</h2>
+  <p>
+    A lattice calculation does not produce a resonance. It produces a discrete tower of
+    finite-volume energies, and the physics lives in how that tower shifts with the box.
+    The Lüscher formalism turns those shifts into scattering amplitudes, whose analytic
+    continuation reveals poles.
+  </p>
+  <p>
+    With the Baryon Scattering (BaSc) collaboration I worked on the $\Lambda(1405)$, long
+    suspected of being two poles rather than one. It needs a large variational basis —
+    single-baryon interpolators alongside two-particle $\pi\Sigma$ and $\bar{K}N$ operators
+    — because the states that matter are scattering states a three-quark operator barely
+    overlaps with. Mapping that spectrum through the coupled-channel quantization condition
+    gave the first <em>ab initio</em> evidence for the two-pole structure
+    (<a href="https://arxiv.org/abs/2307.10413">PRL <strong>132</strong>, 051901</a>;
+    <a href="https://arxiv.org/abs/2307.13471">PRD <strong>109</strong>, 014511</a>, both
+    Editors' Suggestions). The poles are not something you measure so much as something you
+    can only see once the basis is rich enough to hold the states.
+  </p>
+
+  <h2>Structure of bound states in finite volume</h2>
+  <p>
+    Given a bound state on the lattice, what can you say about how it is put together?
+    Finite-volume matrix elements carry that information, but only after the volume
+    dependence is separated from the physical form factor. In
+    <a href="https://arxiv.org/abs/2602.20373">arXiv:2602.20373</a> we develop and test
+    formalism for extracting charge radii and similar observables from lattice EFT
+    calculations of two-body bound states, using systems where the answer is known
+    independently as a control. I derived the estimator, validated it against analytic
+    limits, and quantified the systematic error budget.
+  </p>
+
+  <h2>Two-nucleon systems at heavy quark mass</h2>
+  <p>
+    Whether the deuteron and dineutron bind at unphysically heavy pion masses has been
+    contested for a decade. Using a large variational basis of local and bilocal
+    interpolators, we found no bound di-nucleons at $m_\pi \approx 714$ MeV
+    (<a href="https://arxiv.org/abs/2505.05547">PRC <strong>113</strong>, 024002</a>). The
+    disagreement in the literature turns out to be largely a story about excited-state
+    contamination and how honestly it is treated.
+  </p>
+
+  <h2>Lattice field theory software and HPC</h2>
+  <p>
+    Alongside the physics I write the simulation machinery — chiefly a
+    <strong>Wilson-clover RHMC gauge-field sampler built from scratch in C</strong>, with
+    every stage pinned by an identity the physics must satisfy rather than by a unit test
+    alone.
+  </p>
+  <p>
+    Two results are worth stating as results. Replacing leapfrog with Omelyan 2MN and a
+    two-level Sexton&ndash;Weingarten splitting cut the energy violation
+    <strong>30-fold at equal solve budget</strong>, and with fewer solves — the useful part
+    being the diagnosis behind it, that the <em>gauge</em> force was setting the step-size
+    limit. And a measured study of Clark&ndash;Kennedy $n$-th-root splitting found it
+    <strong>does not pay</strong> at small volume and heavy quarks:
+    $\tau_{\mathrm{int}} N_{\mathrm{mv}}$ rises monotonically with $n$ because the
+    integrator error is gauge-dominated. A negative result, but a quantitative one, and it
+    redirected the effort.
+  </p>
+  <p>
+    The sampler is MPI-parallel, validated to 13&ndash;14 digits across ranks. Current work
+    is multi-RHS solvers.
+    <a href="code.html">More on the software &rarr;</a>
+  </p>
+
+  <h2>Bayesian inference for thermonuclear reaction rates</h2>
+  <p>
+    Before the lattice I worked on nuclear astrophysics: hierarchical Bayesian fits to
+    $D(p,\gamma)^3$He cross-section data, propagating experimental systematics into the
+    reaction rate that sets the primordial deuterium abundance
+    (<a href="https://arxiv.org/abs/2109.00049">ApJ <strong>923</strong>, 49</a>). The
+    datasets spanned decades and were mutually inconsistent; rather than discarding
+    outliers by hand, the model infers a systematic offset per dataset. I still use the
+    machinery — most of what I do now is the same problem in different notation.
+  </p>
+
+  <h2>Current directions</h2>
+  <p>
+    I am working my way into <strong>quantum simulation of gauge theories</strong>.
+    Real-time dynamics and finite density are where the Monte Carlo approach runs out of
+    road. This is a direction rather than a track record; nothing published yet.
+  </p>
+
+<!-- ===========================================================================
+     TALKS — uncomment and fill in when you have the details to hand.
+     Copy one block per talk; renders as a dated timeline, newest first.
+
+  <h2>Selected talks</h2>
+  <dl class="timeline">
+    <div>
+      <dt>Month Year</dt>
+      <dd><b>Talk title</b>
+        <span>Conference or seminar series, City — <a href="#">slides</a></span></dd>
+    </div>
+  </dl>
+     =========================================================================== -->
+
+</main>
+
+<footer class="site">
+  <a href="index.html">Joseph Moscoso</a> · University of Maryland, College Park<br>
+  Last updated August 2026.
+</footer>
+
+</div>
+</body>
+</html>
