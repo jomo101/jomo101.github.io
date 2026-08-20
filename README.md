@@ -12,7 +12,8 @@ GitHub Pages serves it as-is.
 | `publications.html` | Full publication list by type |
 | `code.html` | Software and data releases |
 | `style.css` | All styling. Colors live in the two `:root` blocks at the top. |
-| `assets/photo.jpg` | **Still the placeholder silhouette — replace with a real photo.** |
+| `assets/photo.jpg` | **Still the placeholder silhouette — replace with a real photo.**\
+`sips -Z 800 --cropToHeightWidth 800 800 <src>.jpg --out assets/photo.jpg` |
 | `cv.pdf` | Copy of `Resume_CV/moscoso_cv_2026.pdf`. **Currently unlinked** — the CV item was removed from the nav. Re-add `<a href="cv.pdf">CV</a>` to each page's `<nav>` to restore it. |
 | `.nojekyll` | Tells GitHub Pages to skip Jekyll processing |
 
@@ -49,7 +50,7 @@ carries a phone number and home address that would otherwise be publicly
 downloadable at `jomo101.github.io/cv.pdf`. To publish a CV, put a scrubbed copy
 in the repo and re-add the nav link.
 
-The working copy still lives in `~/Downloads` — worth moving somewhere durable.
+Working copy: `~/Desktop/website`.
 
 ## Before publishing — open items
 
